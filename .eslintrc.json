@@ -11,5 +11,8 @@
       "sourceType": "module"
   },
   "rules": {
-  }
+  },
+  "plugins": [
+    "prefer-class-properties"
+  ]
 }

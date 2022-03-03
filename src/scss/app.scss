@@ -1,6 +1,10 @@
-@import './title';
 
-
-body {
-  background: url('../../assets/images/cat@720x405.jpeg');
+@import '~bootstrap/scss/bootstrap';
+@import './island';
+body{
+  padding: 1rem;
+  background-color:wheat;
 }
+
+
+

@@ -1,0 +1,23 @@
+$component:'island';
+
+.#{$component} {
+  border-radius: 0.5rem;
+  background-color: rgb(224, 142, 142);
+  margin-bottom: 1rem;
+
+  &_item {
+    padding: 0.5rem;
+  }
+
+  &_item+&_item {
+    border-top: rgb(216, 215, 214);
+  }
+
+  h4 {
+    pointer-events: none;
+  }
+
+  time {
+    pointer-events: none;
+  }
+}
