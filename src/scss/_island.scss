@@ -12,6 +12,9 @@ $component:'island';
   &_item+&_item {
     border-top: rgb(216, 215, 214);
   }
+  .island__item_active{
+    color: blue;
+  }
 
   h4 {
     pointer-events: none;
