@@ -1,3 +1,4 @@
+import { marked } from 'marked'
 class Post {
   constructor (containerElement) {
     this.containerElement = containerElement
@@ -61,13 +62,14 @@ class Post {
   }
 
   buildTemplate (data) {
+    data.html = marked.parse(data.content)
     let type = data.select
     type = this.buildTypePost(type)
     return `
       <div class="island__item" data-id="${data.id}">
         <h4>${data.title}</h4>
+        <h4>${data.html}</h4>
         <h3>${data.author}</h3>
-        <p>${data.content}</p>
         <p>${type}</p>
         <time class="text-muted">${data.createdAt}</time>
         <div class="mt-t">

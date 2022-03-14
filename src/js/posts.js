@@ -2,11 +2,12 @@ class Posts {
   constructor (containerElement) {
     this.containerElement = containerElement
     this.baseUrl = '/api/posts'
-    this.init()
     this.activePost = null
     this.postId = ''
     this.currentPost = {}
     this.sortData = ''
+    this.inputElement = document.querySelector('#inputSearch')
+    this.init()
   }
 
   init () {
@@ -15,7 +16,6 @@ class Posts {
     window.addEventListener('form.sent', this.handleDataSent.bind(this))
     window.addEventListener('click.del', this.postDelClicked.bind(this))
     window.addEventListener('click.post.edit', this.clickPostEdit.bind(this))
-    this.inputElement = document.querySelector('#input_serch')
     this.inputElement.addEventListener('input', this.handlePostSort.bind(this))
   }
 
@@ -28,23 +28,21 @@ class Posts {
 
   clickPostEdit () {
     const postEdit = new CustomEvent('click.postForm.edit', {
-
       detail: { data: this.currentPost }
     })
     window.dispatchEvent(postEdit)
   }
 
-  postDelClicked () {
-    fetch(this.postId, {
+  async postDelClicked () {
+    const response = await fetch(this.postId, {
       method: 'DELETE'
     })
-      .then(response => response.json())
-      .then(data => {
-        this.render(data.list)
-      })
+    const data = await response.json()
+
+    this.render(data.list)
   }
 
-  handlePostSend (event) {
+  async handlePostSend (event) {
     const { target } = event
     const { id } = target.dataset
     if (target.dataset.role !== 'edit') return
@@ -56,33 +54,27 @@ class Posts {
       listItemElement.classList.add('island__item_active')
       this.activePost = listItemElement
     }
-    fetch(`${this.baseUrl}/${id} `)
-
-      .then(response => response.json())
-
-      .then(data => {
-        this.currentPost = data
-        const eventCustom = new CustomEvent('post.clicked', {
-          detail: { data }
-        })
-        this.postId = `${this.baseUrl}/${id} `
-        window.dispatchEvent(eventCustom)
-      })
+    const response = await fetch(`${this.baseUrl}/${id} `)
+    const data = await response.json()
+    this.currentPost = data
+    const eventCustom = new CustomEvent('post.clicked', {
+      detail: { data }
+    })
+    this.postId = `${this.baseUrl}/${id} `
+    window.dispatchEvent(eventCustom)
   }
 
-  handlDOMReady () {
-    fetch(this.baseUrl)
-      .then(response => response.json())
-      .then(data => {
-        const { list } = data
-        this.sortData = list
+  async handlDOMReady () {
+    const response = await fetch(this.baseUrl)
+    const data = await response.json()
 
-        this.render(list)
-      })
+    const { list } = data
+    this.render(list)
   }
 
   handleDataSent ({ detail }) {
     const { data } = detail
+    this.sortData = data.list
     this.render(data.list)
   }
 
