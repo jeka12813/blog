@@ -88,7 +88,6 @@ class Posts {
   }
 
   render (data) {
-    this.date = data
     const templates = data.map(item => {
       return this.buildTemplate(item)
     })
